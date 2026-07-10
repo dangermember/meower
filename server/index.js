@@ -36,7 +36,6 @@ function isValidData(data) {
 }
 app.get('/meows', (req, res) => {
     mews.find().toArray().then((list) => {
-        console.log(list);
         res.json(list);
     });
 });
