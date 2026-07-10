@@ -22,6 +22,12 @@ function isValidMeow(meow) {
     return meow.name && meow.name.toString().trim() !== '' &&
         meow.content && meow.content.toString().trim() !== '';
 }
+app.get('/meows', (req, res) => {
+    mews.find().then((mews) => {
+        res.json(mews);
+    })
+    
+});
 
 app.post('/meows', (req, res) => {
     if (isValidMeow(req.body)) {
