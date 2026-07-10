@@ -8,12 +8,12 @@ on:
     branches: [ "master" ]
     paths:
       - 'server/**'
-      - '.github/workflows/testServer.yml'
+      - '.github/workflows/codeCoverageServer.yml'
   pull_request:
     branches: [ "master" ]
     paths:
       - 'server/**'
-      - '.github/workflows/testServer.yml'
+      - '.github/workflows/codeCoverageServer.yml'
 jobs:
   build:
 
