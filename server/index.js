@@ -40,21 +40,28 @@ app.use(rateLimit({
 }));
 
 app.post('/meows', (req, res) => {
-    if (isValidMeow(req.body)) {
-        const meow = {
-            name: filter.clean(req.body.name.toString()),
-            content: filter.clean(req.body.content.toString()),
-            created: new Date()
-        }
-        mews.insert(meow).then((createdMeow) => {
-            res.json(createdMeow);
-        })
-    } else {
+    const name = req.body.name.toString();
+    const content = req.body.content.toString();
+    if (!isValidData(name)) {
         res.status(422).json({
-            message: "Invalid meow data"
+            message: "Name is required"
         });
+        return;
     }
-    console.log(req.body);
+    if (!isValidData(content)) {
+        res.status(422).json({
+            message: "Content is required"
+        });
+        return;
+    }
+    const meow = {
+        name: filter.clean(name),
+        content: filter.clean(content),
+        created: new Date()
+    }
+    mews.insert(meow).then((createdMeow) => {
+        res.json(createdMeow);
+    })
 })
 
 app.listen(5000, () => {
