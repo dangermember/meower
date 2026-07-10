@@ -6,9 +6,14 @@ name: Node.js CI
 on:
   push:
     branches: [ "master" ]
+    paths:
+      - 'server/**'
+      - '.github/workflows/testServer.yml'
   pull_request:
     branches: [ "master" ]
-
+    paths:
+      - 'server/**'
+      - '.github/workflows/testServer.yml'
 jobs:
   build:
 
@@ -28,4 +33,5 @@ jobs:
         cache: 'npm'
         cache-dependency-path: 'server/package-lock.json'
     - run: cd server && npm ci
-    - run: cd server && npm test
+    - run: npm ci
+    - run: npm test
