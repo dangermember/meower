@@ -15,7 +15,6 @@ form.addEventListener("submit", (event) => {
     }
     loadingElemnt.style.display = "";
     form.style.display = "none";
-    console.log(meow);
     fetch(API_URL, {
         method: "POST",
         body: JSON.stringify(meow),
@@ -23,12 +22,33 @@ form.addEventListener("submit", (event) => {
             'content-type': 'application/json'
         }
     }).then((response) => {
-        return response.json();
+        if (!response.ok) {
+            switch (response.status) {
+                case 422:
+                    response.json().then((data) => {
+                        alert(data.message);
+                    });
+                    break;
+                case 429:
+                    alert("Please wait a while before sending another meow");
+                    break;
+                default:
+                    alert("Something went wrong");
+            }
+        }
+        else {
+            return response.json();
+        }
     }).then((data) => {
         form.reset();
         loadingElemnt.style.display = "none";
         form.style.display = "";
         ListAllMeows();
+    }).catch((error) => {
+        alert("Something went wrong! please try again!");
+    }).finally(() => {
+        loadingElemnt.style.display = "none";
+        form.style.display = "";
     });
 });
 
