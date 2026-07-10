@@ -8,3 +8,17 @@
 .loading{
     text-align: center;
 }
+.meows {
+    width: 80%;
+    margin: 0 auto;
+}
+.meow {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+}
+.muted{
+    color: #999;
+    font-style: italic;
+    font-size: 0.8em;
+}
