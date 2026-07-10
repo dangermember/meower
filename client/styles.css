@@ -56,6 +56,7 @@ body {
 
 .meow-form textarea,
 .meow-form input {
+    resize: none;
     width: 100%;
     border-radius: 10px;
     border: 1px solid var(--border);
