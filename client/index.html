@@ -14,7 +14,7 @@
     <header>
         <h1 class="title">Meower - Twitter for cats😺🐈</h1>
     </header>
-    <main>
+    <main class="container">
         <form class="meow-form">
             <label for="name">Name:</label>
             <input class="u-full-width" type="text" id="name" name="name" />
@@ -22,8 +22,13 @@
             <textarea class="u-full-width" type="text" id="content" name="content"></textarea>
             <button class="button-primary" type="submit">Send Your Meow😺</button>
         </form>
-        <div class="loading"><img alt="loading" src="loading.gif" /></div>
-        <div class="meows"></div>
+        <div class="meows-container">
+            <div class="loading"><img alt="loading" src="loading.gif" /></div>
+            <div class="meows"></div>
+            <div class="loadcount">loaded <span id="loadcount">0</span> meows of <span id="totalcount">0</span></div>
+            <div class="meowsloading"><img alt="loading" src="loading.gif" /></div>
+            <div class="loadMore">load more...</div>
+        </div>
     </main>
     <script src="client.js"></script>
 </body>

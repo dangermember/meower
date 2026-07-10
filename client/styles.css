@@ -1,23 +1,66 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
 .title {
     text-align: center;
 }
-.meow-form,.loading {
-    width: 50%;
-    margin: 0 auto;
-}
-.loading{
-    text-align: center;
-}
-.meows {
+
+.container {
     width: 80%;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #f9f9f9;
+    overflow-x: hidden;
 }
+
+.meow-form {
+    width: 80%;
+}
+.meows-container{
+    height: 100%;
+    overflow-y: auto;
+}
+
+.meow-form,
+.loading,
+.meowsloading,
+.loadcount {
+    margin: 0 auto;
+}
+
+.loading,
+.meowsloading,
+.loadcount {
+    text-align: center;
+    display: none;
+}
+
+.meows,
+.loadMore {
+    margin: 0 auto;
+}
+
+.loadMore {
+    text-align: center;
+    cursor: pointer;
+    color: #007BFF;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
 .meow {
     border: 1px solid #ccc;
     padding: 10px;
     margin: 10px 0;
 }
-.muted{
+
+.muted {
     color: #999;
     font-style: italic;
     font-size: 0.8em;
