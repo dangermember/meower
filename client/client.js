@@ -58,17 +58,16 @@ export function setupClient(root = document, apiUrl = API_URL) {
     const loadcountContainerElement = root.querySelector('.loadcountContainer');
     const loadCountElement = root.querySelector('#loadcount');
     const totalCountElement = root.querySelector('#totalcount');
-
     let page = 1;
     let loading = false;
     let finished = false;
 
     function ListAllMeows(reset = false) {
-        meowsloadingElement.style.display = 'block';
-        loadMoreElement.style.display = 'none';
+        meowsloadingElement && (meowsloadingElement.style.display = 'block');
+        loadMoreElement && (loadMoreElement.style.display = 'none');
         loading = true;
         if (reset) {
-            meowsElement.innerHTML = '';
+            meowsElement && (meowsElement.innerHTML = '');
             page = 1;
             finished = false;
         }
@@ -90,16 +89,16 @@ export function setupClient(root = document, apiUrl = API_URL) {
             }).catch(() => {
                 alert('Something went wrong! please refresh the page!');
             }).finally(() => {
-                loadcountContainerElement.style.display = 'block';
-                meowsloadingElement.style.display = 'none';
-                if (!finished) {
+                loadcountContainerElement && (loadcountContainerElement.style.display = 'block');
+                meowsloadingElement && (meowsloadingElement.style.display = 'none');
+                if (!finished && loadMoreElement) {
                     loadMoreElement.style.display = 'block';
                 }
                 loading = false;
             });
     }
 
-    meowsContainerElement.addEventListener('scroll', () => {
+    meowsContainerElement?.addEventListener('scroll', () => {
         const threshold = 100;
         if (
             meowsContainerElement.scrollTop +
@@ -113,7 +112,7 @@ export function setupClient(root = document, apiUrl = API_URL) {
         }
     });
 
-    form.addEventListener('submit', (event) => {
+    form?.addEventListener('submit', (event) => {
         event.preventDefault();
         const formdata = new FormData(form);
         const name = formdata.get('name');
@@ -164,9 +163,4 @@ export function setupClient(root = document, apiUrl = API_URL) {
     return { ListAllMeows };
 }
 
-const isBrowserEntry = typeof document !== 'undefined'
-    && document.currentScript?.src?.endsWith('client.js');
-
-if (isBrowserEntry) {
-    setupClient();
-}
+setupClient();
