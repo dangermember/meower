@@ -5,6 +5,7 @@ import { Filter } from 'bad-words';
 import rateLimit from 'express-rate-limit';
 
 const app = express();
+app.disable('x-powered-by');
 
 const client = new MongoClient(process.env.MONGO_URI || 'mongodb://localhost/meower');
 const db = client.db();
