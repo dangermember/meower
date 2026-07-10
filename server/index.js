@@ -1,12 +1,13 @@
-const express = require('express');
-const cors = require('cors');
-const monk = require('monk');
-const Filter = require('bad-words');
-const filter = new Filter();
+import express from 'express';
+import cors from 'cors';
+import monk from 'monk';
+import { Filter } from 'bad-words';
+
 const app = express();
 
 const db = monk('localhost/meower');
 const mews = db.get('mews');
+const filter = new Filter();
 app.use(cors({
     origin: 'http://127.0.0.1:5500',
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
