@@ -16,6 +16,7 @@ app.disable('x-powered-by');
 const client = new MongoClient(mongoUri);
 const db = client.db();
 const mews = db.collection('mews');
+await mews.createIndex({ created: -1 });
 const filter = new Filter();
 
 app.use(cors({
