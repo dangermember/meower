@@ -37,12 +37,11 @@ function isValidData(data) {
 }
 app.get('/meows', (req, res, next) => {
     const { page = 1, limit = 5, sort = 'desc' } = req.query;
-    const perPage = Number.parseInt(limit);
-
-    const skip = (page - 1) * limit;
+    const perPage = Math.min(50, Math.max(1, Number.parseInt(limit)));
+    const skip = Math.max((page - 1) * limit, 0);
     Promise.all([
         mews.count(),
-        mews.find().sort("created", sort == 'desc'? "desc":"asc").skip(skip).limit(perPage).toArray()
+        mews.find().sort("created", sort == 'desc' ? 'desc' : 'asc').skip(skip).limit(perPage).toArray()
     ])
         .then(([total, mews]) => {
             res.json({
