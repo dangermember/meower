@@ -2,27 +2,29 @@ import express from 'express';
 import cors from 'cors';
 import monk from 'monk';
 import { Filter } from 'bad-words';
+import rateLimit from 'express-rate-limit';
 
 const app = express();
 
 const db = monk('localhost/meower');
 const mews = db.get('mews');
 const filter = new Filter();
+
 app.use(cors({
     origin: 'http://127.0.0.1:5500',
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true // Only if you're using cookies or authentication
 }));
 app.use(express.json());
+
 app.get('/', (req, res) => {
     res.json({
         message: "meower 😺"
     })
 });
 
-function isValidMeow(meow) {
-    return meow.name && meow.name.toString().trim() !== '' &&
-        meow.content && meow.content.toString().trim() !== '';
+function isValidData(data) {
+    return data && data.toString().trim() !== '';
 }
 app.get('/meows', (req, res) => {
     mews.find().then((mews) => {
@@ -30,6 +32,12 @@ app.get('/meows', (req, res) => {
     })
 
 });
+
+app.use(rateLimit({
+    windowMs: 3 * 1000, // 30 seconds
+    max: 1, // limit each IP to 1 request per windowMs
+    message: "Too many requests from this IP, please try again after 30 seconds"
+}));
 
 app.post('/meows', (req, res) => {
     if (isValidMeow(req.body)) {
