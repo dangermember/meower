@@ -35,24 +35,25 @@ function isValidData(data) {
     return data && data.toString().trim() !== '';
 }
 app.get('/meows', (req, res, next) => {
-    const limit = Number.parseInt(req.query.limit || 5);
-    const page = Number.parseInt(req.query.page || 1);
+    const { page = 1, limit = 5, sort = 'desc' } = req.query;
+    const perPage = Number.parseInt(limit);
+
     const skip = (page - 1) * limit;
     Promise.all([
         mews.count(),
-        mews.find().skip(skip).limit(limit).toArray()
+        mews.find().sort("created", sort == 'desc'? "desc":"asc").skip(skip).limit(perPage).toArray()
     ])
-    .then(([total, mews]) => {
-        res.json({
-            mews,
-            meta: {
-                total,
-                page,
-                limit,
-                has_more: total - (skip + limit) > 0,
-            }
-        });
-    }).catch(next);
+        .then(([total, mews]) => {
+            res.json({
+                mews,
+                meta: {
+                    total,
+                    page,
+                    perPage,
+                    has_more: total - (skip + perPage) > 0,
+                }
+            });
+        }).catch(next);
 });
 
 app.use(rateLimit({
