@@ -4,6 +4,7 @@ const meowsContainerElement = document.querySelector(".meows-container");
 const meowsloadingElement = document.querySelector(".meowsloading");
 const meowsElement = document.querySelector(".meows");
 const loadMoreElement = document.querySelector(".loadMore");
+const loadcountContainerElement = document.querySelector(".loadcountContainer");
 const loadCountElement = document.querySelector("#loadcount");
 const totalCountElement = document.querySelector("#totalcount");
 const API_URL = "http://localhost:5000/meows";
@@ -12,10 +13,15 @@ let page = 1;
 let loading = false;
 let finished = false;
 
-meowsContainerElement.addEventListener('scroll', () => {
-    const rect = loadMoreElement.getBoundingClientRect();
-    console.log(rect.top, window.innerHeight, loading, finished);
-    if (rect.top < window.innerHeight && !loading && !finished) {
+meowsContainerElement.addEventListener("scroll", () => {
+    const threshold = 100;
+    if (
+        meowsContainerElement.scrollTop +
+        meowsContainerElement.clientHeight >=
+        meowsContainerElement.scrollHeight - threshold &&
+        !loading &&
+        !finished
+    ) {
         page++;
         ListAllMeows();
     }
@@ -25,6 +31,7 @@ form.addEventListener("submit", (event) => {
     const formdata = new FormData(form);
     const name = formdata.get("name");
     const content = formdata.get("content");
+    let errorMessage;
     const meow = {
         name,
         content
@@ -42,15 +49,16 @@ form.addEventListener("submit", (event) => {
             switch (response.status) {
                 case 422:
                     response.json().then((data) => {
-                        alert(data.message);
+                        showError(data.message);
                     });
-                    break;
+                    return;
                 case 429:
-                    alert("Please wait a while before sending another meow");
+                    errorMessage = "Please wait a while before sending another meow";
                     break;
                 default:
-                    alert("Something went wrong");
+                    errorMessage = "Something went wrong";
             }
+            showError(errorMessage);
         }
         else {
             return response.json();
@@ -61,13 +69,25 @@ form.addEventListener("submit", (event) => {
         form.style.display = "block";
         ListAllMeows(true);
     }).catch((error) => {
-        alert("Something went wrong! please try again!");
+        errorMessage = "Something went wrong! please refresh the page!";
     }).finally(() => {
-        loadingElement.style.display = "none";
-        form.style.display = "block";
+        showError(errorMessage);
     });
 });
-
+function showError(message) {
+    loadingElement.style.display = "none";
+    form.style.display = "block";
+    if (message) {
+        const errorElement = document.createElement("div");
+        errorElement.classList.add("error");
+        errorElement.textContent = message;
+        form.before(errorElement);
+        setTimeout(() => {
+            errorElement.remove();
+        }
+            , 5000);
+    }
+}
 function ListAllMeows(reset = false) {
     meowsloadingElement.style.display = "block";
     loadMoreElement.style.display = "none";
@@ -88,7 +108,12 @@ function ListAllMeows(reset = false) {
     };
     fetch(API_URL + `?page=${page}&limit=${limit}`)
         .then((response) => {
-            return response.json();
+            if (!response.ok) {
+                throw new Error("Failed to fetch meows");
+            }
+            else {
+                return response.json();
+            }
         })
         .then((data) => {
             data.mews.reverse().forEach((meow) => {
@@ -113,8 +138,11 @@ function ListAllMeows(reset = false) {
         }).catch((error) => {
             alert("Something went wrong! please refresh the page!");
         }).finally(() => {
+            loadcountContainerElement.style.display = "block";
             meowsloadingElement.style.display = "none";
             !finished && (loadMoreElement.style.display = "block");
             loading = false;
         });
 }
+
+ListAllMeows(true);
