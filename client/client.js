@@ -1,5 +1,6 @@
 const form = document.querySelector("form");
 const loadingElemnt = document.querySelector(".loading");
+const API_URL = "http://localhost:5000/meows";
 loadingElemnt.style.display = "none";
 form.addEventListener("submit",(event)=>{
     event.preventDefault();
@@ -14,4 +15,11 @@ form.addEventListener("submit",(event)=>{
     loadingElemnt.style.display = "";
     form.style.display = "none";
     console.log(meow);
+    fetch(API_URL,{
+        method:"POST",
+        body: JSON.stringify(meow),
+        headers:{
+            'content-type': 'application/json'
+        }
+    })
 });
