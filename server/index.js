@@ -20,6 +20,20 @@ function isValidMeow(meow){
 }
 
 app.post('/meows',(req,res)=>{
+    if(isValidMeow(req.body)){
+        const meow = {
+            name:req.body.name.toString(),
+            content:req.body.content.toString(),
+            created: new Date()
+        }
+        res.json({
+            message:"meow received 😺"
+        })
+    } else {
+        res.status(422).json({
+            message:"Invalid meow data"
+        })
+    }
     console.log(req.body);
 })
 
