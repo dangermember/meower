@@ -58,14 +58,12 @@ form.addEventListener("submit", (event) => {
                 default:
                     errorMessage = "Something went wrong";
             }
-            showError(errorMessage);
         }
         else {
             return response.json();
         }
     }).then((data) => {
         form.reset();
-        loadingElement.style.display = "none";
         form.style.display = "block";
         ListAllMeows(true);
     }).catch((error) => {
