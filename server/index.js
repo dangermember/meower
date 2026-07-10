@@ -67,7 +67,7 @@ app.post('/meows', (req, res) => {
         content: filter.clean(content),
         created: new Date()
     }
-    mews.insert(meow).then((createdMeow) => {
+    mews.insertOne(meow).then((createdMeow) => {
         res.json(createdMeow);
     })
 })
