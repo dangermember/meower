@@ -3,10 +3,13 @@ const cors = require('cors');
 const monk = require('monk');
 
 const app = express();
+
+const db = monk('localhost/meower');
+const mews = db.get('mews');
 app.use(cors({
-  origin: 'http://127.0.0.1:5500',
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  credentials: true // Only if you're using cookies or authentication
+    origin: 'http://127.0.0.1:5500',
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    credentials: true // Only if you're using cookies or authentication
 }));
 app.use(express.json());
 app.get('/', (req, res) => {
@@ -27,8 +30,8 @@ app.post('/meows', (req, res) => {
             content: req.body.content.toString(),
             created: new Date()
         }
-        res.json({
-            message:"meow received 😺"
+        mews.insert(meow).then((createdMeow) => {
+            res.json(createdMeow);
         })
     } else {
         res.status(422).json({
