@@ -11,13 +11,13 @@ const version = process.env.VERSION || '1.0.0';
 const app = express();
 app.disable('x-powered-by');
 
-const client = new MongoClient(process.env.MONGO_URI || 'mongodb://localhost/meower');
+const client = new MongoClient(mongoUri);
 const db = client.db();
 const mews = db.collection('mews');
 const filter = new Filter();
 
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: clientUri,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true
 }));
@@ -25,7 +25,7 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
     res.json({
-        message: "meower 😺 " + process.env.VERSION
+        message: "meower 😺 " + version
     })
 });
 
@@ -70,6 +70,6 @@ app.post('/meows', (req, res) => {
     })
 })
 
-app.listen(5000, () => {
-    console.log('Listening on http://localhost:5000');
+app.listen(port, () => {
+    console.log('Listening on http://localhost:' + port);
 })
