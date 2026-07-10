@@ -117,7 +117,7 @@ function ListAllMeows(reset = false) {
             data.mews.forEach((meow) => {
                 const meowDiv = document.createElement("div");
                 meowDiv.classList.add("meow");
-                const header = document.createElement("h3");
+                const header = document.createElement("h5");
                 header.textContent = meow.name;
                 const content = document.createElement("p");
                 content.textContent = meow.content;
