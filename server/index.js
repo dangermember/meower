@@ -34,10 +34,25 @@ app.get('/', (req, res) => {
 function isValidData(data) {
     return data && data.toString().trim() !== '';
 }
-app.get('/meows', (req, res) => {
-    mews.find().toArray().then((list) => {
-        res.json(list);
-    });
+app.get('/meows', (req, res, next) => {
+    const limit = Number.parseInt(req.query.limit || 5);
+    const page = Number.parseInt(req.query.page || 1);
+    const skip = (page - 1) * limit;
+    Promise.all([
+        mews.count(),
+        mews.find().skip(skip).limit(limit).toArray()
+    ])
+    .then(([total, mews]) => {
+        res.json({
+            mews,
+            meta: {
+                total,
+                page,
+                limit,
+                has_more: total - (skip + limit) > 0,
+            }
+        });
+    }).catch(next);
 });
 
 app.use(rateLimit({
