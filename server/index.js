@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const monk = require('monk');
-
+const Filter = require('bad-words');
+const filter = new Filter();
 const app = express();
 
 const db = monk('localhost/meower');
@@ -26,14 +27,14 @@ app.get('/meows', (req, res) => {
     mews.find().then((mews) => {
         res.json(mews);
     })
-    
+
 });
 
 app.post('/meows', (req, res) => {
     if (isValidMeow(req.body)) {
         const meow = {
-            name: req.body.name.toString(),
-            content: req.body.content.toString(),
+            name: filter.clean(req.body.name.toString()),
+            content: filter.clean(req.body.content.toString()),
             created: new Date()
         }
         mews.insert(meow).then((createdMeow) => {
