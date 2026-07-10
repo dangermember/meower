@@ -1,25 +1,26 @@
 import express from 'express';
 import cors from 'cors';
-import monk from 'monk';
+import { MongoClient } from 'mongodb';
 import { Filter } from 'bad-words';
 import rateLimit from 'express-rate-limit';
 
 const app = express();
 
-const db = monk('localhost/meower');
-const mews = db.get('mews');
+const client = new MongoClient(process.env.MONGO_URI || 'mongodb://localhost/meower');
+const db = client.db();
+const mews = db.collection('mews');
 const filter = new Filter();
 
 app.use(cors({
-    origin: 'http://127.0.0.1:5500',
+    origin: process.env.CLIENT_URL || 'http://localhost:3000',
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    credentials: true // Only if you're using cookies or authentication
+    credentials: true
 }));
 app.use(express.json());
 
 app.get('/', (req, res) => {
     res.json({
-        message: "meower 😺"
+        message: "meower 😺 " + process.env.VERSION
     })
 });
 
@@ -27,10 +28,10 @@ function isValidData(data) {
     return data && data.toString().trim() !== '';
 }
 app.get('/meows', (req, res) => {
-    mews.find().then((mews) => {
-        res.json(mews);
-    })
-
+    mews.find().toArray().then((list) => {
+        console.log(list);
+        res.json(list);
+    });
 });
 
 app.use(rateLimit({
