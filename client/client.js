@@ -86,10 +86,12 @@ function ListAllMeows() {
                 meowDiv.appendChild(timestamp);
                 meowsElemnt.appendChild(meowDiv);
             });
+        }).catch((error) => {
+            alert("Something went wrong! please refresh the page!");
+        }).finally(() => {
+            loadingElemnt.style.display = "none";
+            meowsElemnt.style.display = "";
         });
-    loadingElemnt.style.display = "none";
-    meowsElemnt.style.display = "";
-
 }
 
 ListAllMeows();
