@@ -1,8 +1,8 @@
 const form = document.querySelector("form");
-const loadingElemnt = document.querySelector(".loading");
-const meowsElemnt = document.querySelector(".meows");
+const loadingElement = document.querySelector(".loading");
+const meowsElement = document.querySelector(".meows");
 const API_URL = "http://localhost:5000/meows";
-loadingElemnt.style.display = "none";
+loadingElement.style.display = "none";
 form.addEventListener("submit", (event) => {
     event.preventDefault();
 
@@ -13,7 +13,7 @@ form.addEventListener("submit", (event) => {
         name,
         content
     }
-    loadingElemnt.style.display = "";
+    loadingElement.style.display = "";
     form.style.display = "none";
     fetch(API_URL, {
         method: "POST",
@@ -41,21 +41,21 @@ form.addEventListener("submit", (event) => {
         }
     }).then((data) => {
         form.reset();
-        loadingElemnt.style.display = "none";
+        loadingElement.style.display = "none";
         form.style.display = "";
         ListAllMeows();
     }).catch((error) => {
         alert("Something went wrong! please try again!");
     }).finally(() => {
-        loadingElemnt.style.display = "none";
+        loadingElement.style.display = "none";
         form.style.display = "";
     });
 });
 
 function ListAllMeows() {
-    loadingElemnt.style.display = "";
-    meowsElemnt.style.display = "none";
-    meowsElemnt.innerHTML = "";
+    loadingElement.style.display = "";
+    meowsElement.style.display = "none";
+    meowsElement.innerHTML = "";
     const options = {
         weekday: 'long',
         year: 'numeric',
@@ -84,13 +84,13 @@ function ListAllMeows() {
                 meowDiv.appendChild(header);
                 meowDiv.appendChild(content);
                 meowDiv.appendChild(timestamp);
-                meowsElemnt.appendChild(meowDiv);
+                meowsElement.appendChild(meowDiv);
             });
         }).catch((error) => {
             alert("Something went wrong! please refresh the page!");
         }).finally(() => {
-            loadingElemnt.style.display = "none";
-            meowsElemnt.style.display = "";
+            loadingElement.style.display = "none";
+            meowsElement.style.display = "";
         });
 }
 
