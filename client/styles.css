@@ -41,6 +41,7 @@ body {
     justify-content: space-between;
     height: calc(100% - 50px);
 }
+
 .title {
     display: block;
     text-align: center;
@@ -139,9 +140,10 @@ input[type=submit]:hover {
 .meows {
     display: flex;
     flex-direction: column;
+    padding-top: 1rem;
     gap: 1rem;
     max-width: 760px;
-    margin:auto;
+    margin: auto;
 }
 
 .meow {
@@ -154,6 +156,10 @@ input[type=submit]:hover {
     display: flex;
     flex-direction: column;
     gap: .75rem;
+}
+
+.meow * {
+    margin: 0;
 }
 
 .meow::before {
@@ -172,25 +178,32 @@ input[type=submit]:hover {
 }
 
 .muted {
-    font-size: .85rem;
     color: var(--muted);
+}
+.smaller{
+    font-size: smaller;
+}
+.bold {
+    font-weight: 600;
+}
+
+.larger {
+    font-size: larger;
+}
+
+.x-larger {
+    font-size: x-large;
 }
 
 .loadMore {
     margin: 2rem auto;
-    display: inline-flex;
-    padding: .85rem 1.4rem;
-    border-radius: 999px;
+    border-radius: 20px;
     background: #fff;
     box-shadow: var(--shadow-sm);
     font-weight: 600;
     cursor: pointer;
-    transition: .2s;
     color: var(--primary);
-}
-
-.loadMore:hover {
-    transform: translateY(-2px);
+    text-align: center;
 }
 
 .error {

@@ -115,17 +115,16 @@ function ListAllMeows(reset = false) {
         })
         .then((data) => {
             data.mews.forEach((meow) => {
+                const date = new Intl.DateTimeFormat('en-US', options).format(new Date(meow.created));
                 const meowDiv = document.createElement("div");
                 meowDiv.classList.add("meow");
-                const header = document.createElement("h5");
-                header.textContent = meow.name;
                 const content = document.createElement("p");
+                content.classList.add("bold", "x-larger");
                 content.textContent = meow.content;
                 const timestamp = document.createElement("span");
-                timestamp.classList.add("muted");
-                timestamp.textContent = new Intl.DateTimeFormat('en-US', options).format(new Date(meow.created));
+                timestamp.classList.add("smaller");
+                timestamp.textContent = `Posted by ${meow.name} on ${date}`;
 
-                meowDiv.appendChild(header);
                 meowDiv.appendChild(content);
                 meowDiv.appendChild(timestamp);
                 meowsElement.appendChild(meowDiv);
