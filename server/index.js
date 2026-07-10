@@ -14,6 +14,11 @@ app.get('/',(req,res)=>{
     })
 });
 
+function isValidMeow(meow){
+    return meow.name && meow.name.toString().trim() !== '' &&
+           meow.content && meow.content.toString().trim() !== '';
+}
+
 app.post('/meows',(req,res)=>{
     console.log(req.body);
 })
