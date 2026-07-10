@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { MongoClient } from 'mongodb';
@@ -6,8 +7,9 @@ import rateLimit from 'express-rate-limit';
 
 const port = process.env.PORT || 5000;
 const mongoUri = process.env.MONGO_URI || 'mongodb://localhost/meower';
-const clientUri = process.env.CLIENT_URL || 'http://localhost:5500';
+const clientUri = process.env.CLIENT_URI || 'http://localhost:3000';
 const version = process.env.VERSION || '1.0.0';
+
 const app = express();
 app.disable('x-powered-by');
 
